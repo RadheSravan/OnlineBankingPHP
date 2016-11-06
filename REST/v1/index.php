@@ -8,170 +8,231 @@ require '.././libs/Slim/Slim.php';
 
 $app = new \Slim\Slim();
 
-// User id from db - Global Variable
 $customer_id = NULL;
 
-/**
- * Adding Middle Layer to authenticate every request
- * Checking if the request has valid api key in the 'Authorization' header
- */
-function authenticate(\Slim\Route $route) {
-    // Getting request headers
-    $headers = apache_request_headers();
+function authenticate(\Slim\Route $route)
+{
+    
+    $headers  = apache_request_headers();
     $response = array();
-    $app = \Slim\Slim::getInstance();
-
-    // Verifying Authorization Header
+    $app      = \Slim\Slim::getInstance();
+    
     if (isset($headers['Authorization'])) {
-        $db = new DbHandler();
-
-        // get the api key
+        
+        $db      = new DbHandler();
         $api_key = $headers['Authorization'];
-        // validating api key
+        
         if (!$db->isValidApiKey($api_key)) {
-            // api key is not present in users table
-            $response["error"] = true;
+            $response["error"]   = true;
             $response["message"] = "Access Denied. Invalid Api key";
-            echoRespnse(401, $response);
+            echoResponse(401, $response);
             $app->stop();
         } else {
             global $customer_id;
             $customer_id = $db->getCustomerId($api_key);
         }
     } else {
-        // api key is missing in header
-        $response["error"] = true;
+        $response["error"]   = true;
         $response["message"] = "Api key is misssing";
-        echoRespnse(400, $response);
+        echoResponse(400, $response);
         $app->stop();
     }
 }
 
-/**
- * Customer Registration
- * url - /register
- * method - POST
- * params - user name, password, first name, last name, email
- */
-$app->post('/register', function() use ($app) {
-            // check for required params
-            verifyRequiredParams(array('user_name','password','first_name','last_name','email'));
+$app->post('/register', function() use ($app)
+{
+    
+    verifyRequiredParams(array(
+        'user_name',
+        'password',
+        'first_name',
+        'last_name',
+        'email'
+    ));
+    
+    $response = array();
+    
+    $user_name  = $app->request->post('user_name');
+    $password   = $app->request->post('password');
+    $first_name = $app->request->post('first_name');
+    $last_name  = $app->request->post('last_name');
+    $email      = $app->request->post('email');
+    
+    validateEmail($email);
+    
+    $db  = new DbHandler();
+    $res = $db->createUser($user_name, $password, $first_name, $last_name, $email);
+    
+    if ($res == 0) {
+        $response["error"]   = false;
+        $response["message"] = "Success";
+        echoResponse(200, $response);
+    } else if ($res == 1) {
+        $response["error"]   = true;
+        $response["message"] = "Failed";
+        echoResponse(201, $response);
+    } else if ($res == 2) {
+        $response["error"]   = true;
+        $response["message"] = "Sorry, a user already exists with the provided details";
+        echoResponse(201, $response);
+    }
+});
 
-            $response = array();
+$app->post('/login', function() use ($app)
+{
+    verifyRequiredParams(array(
+        'user_name',
+        'password'
+    ));
+    
+    $user_name = $app->request()->post('user_name');
+    $password  = $app->request()->post('password');
+    $response  = array();
+    
+    $db = new DbHandler();
+    
+    if ($db->checkLogin($user_name, $password)) {
+        
+        $user = $db->getUserByUsername($user_name);
+        
+        if ($user != NULL) {
+            $response["error"]       = false;
+            $response['customer_id'] = $user['customer_id'];
+            $response['first_name']  = $user['first_name'];
+            $response['last_name']   = $user['last_name'];
+            $response['api_Key']     = $user['api_key'];
+            $response['last_login']  = $user['last_login'];
+        } else {
+            $response['error']   = true;
+            $response['message'] = "An error occurred. Please try again";
+        }
+    } else {
+        $response['error']   = true;
+        $response['message'] = 'Login failed. Incorrect credentials';
+    }
+    echoResponse(200, $response);
+});
 
-            // reading post params
-            $user_name = $app->request->post('user_name');
-            $password = $app->request->post('password');
-            $first_name = $app->request->post('first_name');
-            $last_name = $app->request->post('last_name');
-            $email = $app->request->post('email');
-            
+$app->get('/accounts', 'authenticate', function()
+{
+    global $customer_id;
+    $response = array();
+    $db       = new DbHandler();
+    
+    $result = $db->getAllAccounts($customer_id);
+    
+    $response["error"]    = false;
+    $response["accounts"] = array();
+    
+    while ($account = $result->fetch_assoc()) {
+        $tmp                    = array();
+        $tmp["account_number"]  = $account["account_number"];
+        $tmp["customer_id"]     = $account["customer_id"];
+        $tmp["branch"]          = $account["branch"];
+        $tmp["account_status"]  = $account["account_status"];
+        $tmp["account_type"]    = $account["account_type"];
+        $tmp["account_balance"] = $account["account_balance"];
+        array_push($response["accounts"], $tmp);
+    }
+    
+    echoResponse(200, $response);
+});
 
-            // validating email address
-            validateEmail($email);
+$app->post('/announcements', function() use ($app)
+{
+    
+    verifyRequiredParams(array(
+        'announcement'
+    ));
+    
+    $response = array();
+    
+    $announcement = $app->request->post('announcement');
+    
+    $db  = new DbHandler();
+    $res = $db->createAnnouncement($announcement);
+    
+    if ($res == 0) {
+        $response["error"]   = false;
+        $response["message"] = "Success";
+        echoResponse(200, $response);
+    } else if ($res == 1) {
+        $response["error"]   = true;
+        $response["message"] = "Failed";
+        echoResponse(201, $response);
+    }
+});
 
-            $db = new DbHandler();
-            $res = $db->createUser($user_name,$password,$first_name,$last_name,$email);
+$app->get('/announcements', function()
+{
+    
+    $response = array();
+    $db       = new DbHandler();
+    
+    $result = $db->getAllAnnouncements();
+    
+    $response["error"]         = false;
+    $response["announcements"] = array();
+    
+    while ($announcement = $result->fetch_assoc()) {
+        $tmp                    = array();
+        $tmp["announcement_id"] = $announcement["announcement_id"];
+        $tmp["announcement"]    = $announcement["announcement"];
+        array_push($response["announcements"], $tmp);
+    }
+    
+    echoResponse(200, $response);
+});
 
-            if ($res == USER_CREATED_SUCCESSFULLY) {
-                $response["error"] = false;
-                $response["message"] = "Success";
-                echoRespnse(200, $response);
-            } else if ($res == USER_CREATE_FAILED) {
-                $response["error"] = true;
-                $response["message"] = "Failed";
-                echoRespnse(201, $response);
-            } else if ($res == USER_ALREADY_EXISTED) {
-                $response["error"] = true;
-                $response["message"] = "Sorry, a user already exists with the provided details";
-                echoRespnse(201, $response);
-            }
-            // echo json response
-            
-        });
+$app->put('/announcements/:id', function($announcement_id) use ($app)
+{
+    verifyRequiredParams(array(
+        'announcement'
+    ));
+    
+    $announcement = $app->request->put('announcement');
+    
+    $db       = new DbHandler();
+    $response = array();
+    
+    $result = $db->updateAnnouncement($announcement_id, $announcement);
+    if ($result) {
+        $response["error"]   = false;
+        $response["message"] = "Announcement updated successfully";
+        echoResponse(200, $response);
+    } else {
+        $response["error"]   = true;
+        $response["message"] = "Failed to update announcement. Try again later!";
+        echoResponse(201, $response);
+    }
+    
+});
 
-/**
- * User Login
- * url - /login
- * method - POST
- * params - username, password
- */
-$app->post('/login', function() use ($app) {
-            // check for required params
-            verifyRequiredParams(array('user_name', 'password'));
+$app->delete('/announcements/:id', function($announcement_id) use ($app)
+{
+    $db = new DbHandler();
+    
+    $response = array();
+    $result   = $db->deleteAnnouncement($announcement_id);
+    
+    if ($result) {
+        $response["error"]   = false;
+        $response["message"] = "Announcement deleted succesfully";
+    } else {
+        $response["error"]   = true;
+        $response["message"] = "Failed to delete the announcement. Try again later!";
+    }
+    echoResponse(200, $response);
+});
 
-            // reading post params
-            $user_name = $app->request()->post('user_name');
-            $password = $app->request()->post('password');
-            $response = array();
 
-            $db = new DbHandler();
-            // check for correct username and password
-            if ($db->checkLogin($user_name, $password)) {
-                // get the user by username
-                $user = $db->getUserByUsername($user_name);
-
-                if ($user != NULL) {
-                    $response["error"] = false;
-                    $response['customer_id'] = $user['customer_id'];
-                    $response['first_name'] = $user['first_name'];
-                    $response['last_name'] = $user['last_name'];
-                    $response['api_Key'] = $user['api_key'];
-                    $response['last_login'] = $user['last_login'];
-                } else {
-                    // unknown error occurred
-                    $response['error'] = true;
-                    $response['message'] = "An error occurred. Please try again";
-                }
-            } else {
-                // user credentials are wrong
-                $response['error'] = true;
-                $response['message'] = 'Login failed. Incorrect credentials';
-            }
-
-            echoRespnse(200, $response);
-        });
-
-/**
- * Listing all accounts of particual customer
- * method GET
- * url /accounts         
- */
-$app->get('/accounts', 'authenticate', function() {
-            global $customer_id;
-            $response = array();
-            $db = new DbHandler();
-
-            // fetching all user tasks
-            $result = $db->getAllAccounts($customer_id);
-
-            $response["error"] = false;
-            $response["accounts"] = array();
-
-            // looping through result and preparing accounts array
-            while ($account = $result->fetch_assoc()) {
-                $tmp = array();
-                $tmp["account_number"] = $account["account_number"];
-                $tmp["customer_id"] = $account["customer_id"];
-                $tmp["branch"] = $account["branch"];
-                $tmp["account_status"] = $account["account_status"];
-                $tmp["account_type"] = $account["account_type"];
-                $tmp["account_balance"] = $account["account_balance"];
-                array_push($response["accounts"], $tmp);
-            }
-
-            echoRespnse(200, $response);
-        });
-
-/**
- * Verifying required params posted or not
- */
-function verifyRequiredParams($required_fields) {
-    $error = false;
-    $error_fields = "";
+function verifyRequiredParams($required_fields)
+{
+    $error          = false;
+    $error_fields   = "";
     $request_params = array();
     $request_params = $_REQUEST;
-    // Handling PUT request params
+    
     if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         $app = \Slim\Slim::getInstance();
         parse_str($app->request()->getBody(), $request_params);
@@ -182,45 +243,36 @@ function verifyRequiredParams($required_fields) {
             $error_fields .= $field . ', ';
         }
     }
-
+    
     if ($error) {
-        // Required field(s) are missing or empty
-        // echo error json and stop the app
-        $response = array();
-        $app = \Slim\Slim::getInstance();
-        $response["error"] = true;
+        $response            = array();
+        $app                 = \Slim\Slim::getInstance();
+        $response["error"]   = true;
         $response["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
-        echoRespnse(400, $response);
+        echoResponse(400, $response);
         $app->stop();
     }
 }
 
-/**
- * Validating email address
- */
-function validateEmail($email) {
+function validateEmail($email)
+{
     $app = \Slim\Slim::getInstance();
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $response["error"] = true;
+        $response["error"]   = true;
         $response["message"] = 'Email address is not valid';
-        echoRespnse(400, $response);
+        echoResponse(400, $response);
         $app->stop();
     }
 }
 
-/**
- * Echoing json response to client
- * @param String $status_code Http response code
- * @param Int $response Json response
- */
-function echoRespnse($status_code, $response) {
+function echoResponse($status_code, $response)
+{
+    
     $app = \Slim\Slim::getInstance();
-    // Http response code
+    
     $app->status($status_code);
-
-    // setting response content type to json
     $app->contentType('application/json');
-
+    
     echo json_encode($response);
 }
 

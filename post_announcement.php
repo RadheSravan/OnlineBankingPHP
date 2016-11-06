@@ -1,12 +1,9 @@
 <?php
-$user_name = $_POST["username"];
-$password  = $_POST["password"];
-
-$service_url    = 'http://localhost/OnlineBankingPHP/REST/v1/login';
+$announcement = $_POST["username"];
+$service_url    = 'http://localhost/OnlineBankingPHP/REST/v1/announcements';
 $curl           = curl_init($service_url);
 $curl_post_data = array(
-    'user_name' => $user_name,
-    'password'  => $password
+    'announcement' => $announcement
 );
 
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -29,14 +26,5 @@ if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') 
     die('Error occured: ' . $decoded->response->errormessage);
 }
 
-if ($decoded['error']) {
-    echo $decoded['message'];
-} else {
-	session_start();
-	$_SESSION["last_login"] = date('l, jS F Y, h:i A', strtotime($decoded['last_login']));
-	$_SESSION["name"] = $decoded['first_name'].' '.$decoded['last_name'];
-	$_SESSION["api_key"] = $decoded['api_Key'];
-    header('Location: homepage.php');
-}
-
+print_r($decoded['message']);
 ?>

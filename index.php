@@ -1,3 +1,9 @@
+<?php
+   session_start();
+   if(isset($_SESSION['api_key'])){
+      header('Location: homepage.php');
+   }
+?>
 <!doctype html>
 <html lang="en">
    <head>
@@ -36,13 +42,13 @@
                   <a href="#" class="active_link">Home</a>
                </li>
                <li>
-                  <a href="login.html">Login</a>
+                  <a href="login.php">Login</a>
                </li>
                <li>
-                  <a href="branches.html">Branches</a>
+                  <a href="branches.php">Branches</a>
                </li>
                <li>
-                  <a href="faq.html">FAQ</a>
+                  <a href="faq.php">FAQ</a>
                </li>
             </ul>
          </div>
@@ -70,26 +76,76 @@
             </div>
             <div id = "announcements" class = "col-lg-4 col-md-4 hidden-xs hidden-sm">
                <h1 id="announcements_heading"> Announcements </h1>
-               <p>&bull; Board meeting on 20th October 2016</p>
-               <p>&bull; Withdrawal limit of ATM has been increased from &#x20b9; 25,000 to &#x20b9; 40,000</p>
-               <p>&bull; Annual return forms available at your nearest branches now</p>
-               <p>&bull; File your E-tax forms on or before 30th July 2016</p>
-               <p>&bull; New account for BPL certificate holders for only &#x20b9; 100</p>
+               <?php
+                  $service_url = 'http://localhost/OnlineBankingPHP/REST/v1/announcements';
+                  $curl        = curl_init($service_url);
+
+                  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                  $curl_response = curl_exec($curl);
+
+                  if ($curl_response === false) {
+                      $info = curl_getinfo($curl);
+                      curl_close($curl);
+                      die('error occured during curl exec. Additioanl info: ' . var_export($info));
+                  }
+
+                  curl_close($curl);
+
+                  $decoded = json_decode($curl_response, true);
+
+                  if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
+                      die('error occured: ' . $decoded->response->errormessage);
+                  }
+
+                  $announcements = array();
+                  $announcements = $decoded['announcements'];
+                  
+                  for ($i = 0; $i < sizeof($announcements); $i++) {
+                      print_r ('<p>&bull; '.$announcements[$i]['announcement'].'</p>');
+                  }
+                  
+                  ?>
             </div>
             <div class = "hidden-lg hidden-md col-xs-12 col-sm-12">
                <div id="announcements_small_heading"> <a href="#announements_small_heading" onclick="show_hide('announcements_small')">Click here for Announcements </a></div>
                <a id="div_link" onclick="show_hide('announcements_small')">
                   <div id="announcements_small" >
-                     <p>&bull; Board meeting on 20th October 2016</p>
-                     <p>&bull; Withdrawal limit of ATM has been increased from &#x20b9; 25,000 to &#x20b9; 40,000</p>
-                     <p>&bull; Annual return forms available at your nearest branches now</p>
-                     <p>&bull; File your E-tax forms on or before 30th July 2016</p>
-                     <p>&bull; New account for BPL certificate holders for only &#x20b9; 100</p>
+                     <?php
+                        $service_url = 'http://localhost/OnlineBankingPHP/REST/v1/announcements';
+                        $curl        = curl_init($service_url);
+
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                        $curl_response = curl_exec($curl);
+
+                        if ($curl_response === false) {
+                            $info = curl_getinfo($curl);
+                            curl_close($curl);
+                            die('error occured during curl exec. Additioanl info: ' . var_export($info));
+                        }
+
+                        curl_close($curl);
+
+                        $decoded = json_decode($curl_response, true);
+
+                        if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
+                            die('error occured: ' . $decoded->response->errormessage);
+                        }
+
+                        $announcements = array();
+                        $announcements = $decoded['announcements'];
+                        
+                        for ($i = 0; $i < sizeof($announcements); $i++) {
+                            print_r ('<p>&bull; '.$announcements[$i]['announcement'].'</p>');
+                        }
+                        
+                        ?>
                   </div>
                </a>
             </div>
             <div id ="content" class = "col-lg-9 col-md-9 col-xs-12 col-sm-12">
-               <a href="register.html">
+               <a href="register.php">
                   <h1 id="content_heading">Register For NetBanking Now!!</h1>
                </a>
                <p class="matter">Now monitor, transact and control your bank account online through our net banking service. You can do multiple things from the comforts of your home or office with our Internet Banking - a one stop solution for all your banking needs.You can now get all your accounts details, submit requests and undertake a wide range of transactions online. Our E-Banking service makes banking a lot more easy and effective.
@@ -106,7 +162,7 @@
                <p class="matter_heading"><a href="#features" onclick="show_hide('value_added_services')">Value Added Services</a></p>
                <p class="matter_desc" id="value_added_services">Pay utility bills for more than 160 billers, recharge mobile, create Virtual Cards, pay any Visa Credit Card bills, register for E-Statement and SMS banking</p>
                <p class="matter">
-                  Register now for Gotham Bank's internet banking service to get started and avail for you multiple utility services, all in a matter of a click. Getting started with our internet banking is real easy. All you need to do is follow a few simple steps and you are good to go. Click <a href="register.html">here</a> for our registration process.
+                  Register now for Gotham Bank's internet banking service to get started and avail for you multiple utility services, all in a matter of a click. Getting started with our internet banking is real easy. All you need to do is follow a few simple steps and you are good to go. Click <a href="register.php">here</a> for our registration process.
                </p>
                <p class="matter"> We at the B.O.G.C follow best-in-class online security practices in order to safeguard your information while you are banking online. We are constantly at task for preventing fraud and thereby making all your net banking transactions completely safe.</p>
             </div>
@@ -121,27 +177,7 @@
             </div>
          </div>
       </div>
-      <footer class="panel-footer">
-         <div class="container">
-            <div class="row">
-               <section class="col-lg-2 col-md-2 hidden-sm hidden-xs"></section>
-               <section id="address" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                  <p> Address : </p>
-                  <p>The Bank of Gotham City,</p>
-                  <p>Star House,</p>
-                  <p>C - 5, "G" Block,</p>
-                  <p>Batman Complex</p>
-               </section>
-               <section id="contact_us" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                  <p> Contact Us : </p>
-                  <p><a href="mailto:support@gothambank.com"><span class="glyphicon glyphicon-envelope"></span> support@gothambank.com</a>
-                  <p> <a href="tele:1800222444"><span class="glyphicon glyphicon-earphone"></span> 1800-222-444</a>
-               </section>
-               <section class="col-lg-2 col-md-2 hidden-sm hidden-xs"></section>
-            </div>
-            <div id="copyright" class="text-center">&copy; Copyright Reserved</div>
-         </div>
-      </footer>
+      <?php include'footer.php' ?>
       <!-- jQuery (Bootstrap JS plugins depend on it) -->
       <script src="js/jquery-2.1.4.min.js"></script>
       <script src="js/bootstrap.min.js"></script>

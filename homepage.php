@@ -1,7 +1,7 @@
 <!doctype html>
 <?php
    session_start();
-   ?>
+?>
 <html lang="en">
    <head>
       <meta charset="utf-8">
@@ -42,7 +42,7 @@
                   <a href="#">Change Password</a>
                </li>
                <li>
-                  <a href="#">Logout</a>
+                  <a href="logout.php">Logout</a>
                </li>
             </ul>
          </div>
@@ -61,8 +61,8 @@
                   ?></div>
                <div id="account_summary">
                   <div id="account_summary_title">Account(s) Summary</div>
-                  <div id="big_table_div" class="hidden-xs">
-                     <table id="big_table" class="hidden-xs">
+                  <div id="big_table_div" class="col-lg-10 col-md-9 col-sm-12 hidden-xs">
+                     <table id="big_table" class="col-lg-10 col-md-9 col-sm-12 hidden-xs">
                         <theader>
                            <tr>
                               <th>Account Type</th>
@@ -78,21 +78,28 @@
                               $api_key     = $_SESSION["api_key"];
                               $header      = 'Authorization : ' . $api_key;
                               $curl        = curl_init($service_url);
+
                               curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                               curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                                   $header
                               ));
+
                               $curl_response = curl_exec($curl);
+
                               if ($curl_response === false) {
                                   $info = curl_getinfo($curl);
                                   curl_close($curl);
                                   die('error occured during curl exec. Additioanl info: ' . var_export($info));
                               }
+
                               curl_close($curl);
+
                               $decoded = json_decode($curl_response, true);
+
                               if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
                                   die('error occured: ' . $decoded->response->errormessage);
                               }
+
                               $accounts = array();
                               $accounts = $decoded['accounts'];
                               
@@ -103,7 +110,7 @@
                                   print_r ('<td>'.$accounts[$i]['branch'].'</td>');
                                   print_r ('<td>'.$accounts[$i]['account_status'].'</td>');
                                   print_r ('<td>&#x20b9; '.$accounts[$i]['account_balance'].'</td>');
-                              echo "</tr>";
+                                  echo "</tr>";
                               }
                               
                               ?>
@@ -121,17 +128,23 @@
                            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                                $header
                            ));
+
                            $curl_response = curl_exec($curl);
+
                            if ($curl_response === false) {
                                $info = curl_getinfo($curl);
                                curl_close($curl);
                                die('error occured during curl exec. Additioanl info: ' . var_export($info));
                            }
+
                            curl_close($curl);
+
                            $decoded = json_decode($curl_response, true);
+
                            if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
                                die('error occured: ' . $decoded->response->errormessage);
                            }
+
                            $accounts = array();
                            $accounts = $decoded['accounts'];
                            
@@ -166,27 +179,7 @@
             </div>
          </div>
       </div>
-      <footer class="panel-footer">
-         <div class="container">
-            <div class="row">
-               <section class="col-lg-2 col-md-2 hidden-sm hidden-xs"></section>
-               <section id="address" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                  <p> Address : </p>
-                  <p>The Bank of Gotham City,</p>
-                  <p>Star House,</p>
-                  <p>C - 5, "G" Block,</p>
-                  <p>Batman Complex</p>
-               </section>
-               <section id="contact_us" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                  <p> Contact Us : </p>
-                  <p><a href="mailto:support@gothambank.com"><span class="glyphicon glyphicon-envelope"></span> support@gothambank.com</a>
-                  <p> <a href="tele:1800222444"><span class="glyphicon glyphicon-earphone"></span> 1800-222-444</a>
-               </section>
-               <section class="col-lg-2 col-md-2 hidden-sm hidden-xs"></section>
-            </div>
-            <div id="copyright" class="text-center">&copy; Copyright Reserved</div>
-         </div>
-      </footer>
+      <?php include'footer.php' ?>
       <!-- jQuery (Bootstrap JS plugins depend on it) -->
       <script src="js/jquery-2.1.4.min.js"></script>
       <script src="js/bootstrap.min.js"></script>

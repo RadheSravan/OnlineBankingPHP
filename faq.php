@@ -33,13 +33,13 @@
             <div id="collapsable-nav" class="collapse navbar-collapse">
                <ul id="nav-list" class="nav navbar-nav navbar-right">
                   <li>
-                     <a href="index.html">Home</a>
+                     <a href="./">Home</a>
                   </li>
                   <li>
-                     <a href="login.html">Login</a>
+                     <a href="login.php">Login</a>
                   </li>
                   <li>
-                     <a href="branches.html">Branches</a>
+                     <a href="branches.php">Branches</a>
                   </li>
                   <li>
                      <a href="#" class="active_link">FAQ</a>
@@ -70,27 +70,7 @@
       <div class="col-lg-2 col-md-2 col-sm-1 hidden-xs"></div></div>
       </div>
       </div>
-      <footer class="panel-footer">
-         <div class="container">
-            <div class="row">
-               <section class="col-lg-2 col-md-2 hidden-sm hidden-xs"></section>
-               <section id="address" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                  <p> Address : </p>
-                  <p>The Bank of Gotham City,</p>
-                  <p>Star House,</p>
-                  <p>C - 5, "G" Block,</p>
-                  <p>Batman Complex</p>
-               </section>
-               <section id="contact_us" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                  <p> Contact Us : </p>
-                  <p><a href="mailto:support@gothambank.com"><span class="glyphicon glyphicon-envelope"></span> support@gothambank.com</a>
-                  <p> <a href="tele:1800222444"><span class="glyphicon glyphicon-earphone"></span> 1800-222-444</a>
-               </section>
-               <section class="col-lg-2 col-md-2 hidden-sm hidden-xs"></section>
-            </div>
-            <div id="copyright" class="text-center">&copy; Copyright Reserved</div>
-         </div>
-      </footer>
+      <?php include'footer.php' ?>
       <!-- jQuery (Bootstrap JS plugins depend on it) -->
       <script src="js/jquery-2.1.4.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
