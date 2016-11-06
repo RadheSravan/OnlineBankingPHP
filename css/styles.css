@@ -1,0 +1,577 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-size: 20px;
+    color: #000;
+    background-color: #ffffff;
+    font-family: 'Oxygen', sans-serif;
+}
+#header-nav {
+    background-color: #191919;
+}
+.navbar-brand {
+    padding-top: 25px;
+}
+.navbar-brand h1 {
+    font-family: "Marck Script", cursive;
+    color: yellow;
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-top: 0;
+}
+.navbar-brand a:hover,
+.navbar-brand a:focus {
+    text-decoration: none;
+}
+.navbar-brand p {
+    color: #ffffff;
+    font-size: 1.5em;
+    margin-top: 25px;
+    text-align: right;
+}
+#nav-list {
+    margin-top: 10px;
+}
+#nav-list a {
+    color: #ffffff;
+}
+#nav-list a:hover {
+    color: #ff6600;
+}
+.navbar-header button.navbar-toggle,
+.navbar-header .icon-bar {
+    border: 1px solid #ff6600;
+}
+.navbar-header button.navbar-toggle {
+    clear: both;
+    margin-top: -30px;
+}
+.slideshow-container {
+    border: 1px solid black;
+}
+.slides img {
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+}
+#announcements {
+    border: 1px solid black;
+    height: 360px;
+    overflow-y: auto;
+}
+#announcements_heading {
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Niconne', cursive;
+}
+#announcements_small_heading {
+    background-color: #e4e4e4;
+    margin-top: 10px;
+    padding: 5px;
+    text-align: center;
+    font-size: 19px;
+}
+#announcements_small_heading a {
+    text-decoration: none;
+    color: #000000;
+    font-family: 'Crimson Text', serif;
+    font-size: 22px;
+}
+#div_link {
+    text-decoration: none;
+    color: #000000;
+}
+#announcements_small {
+    padding: 10px;
+    background-color: #f6f6f6;
+    font-size: 16px;
+}
+#announcements p {
+    text-align: justify;
+    font-size: 17px;
+    padding: 5px;
+    padding-bottom: 0;
+}
+#content_heading {
+    font-size: 22px;
+    text-align: center;
+    color: #0000cc;
+}
+#content a {
+    text-decoration: none;
+}
+#content a h1:hover {
+    color: #ff6600;
+}
+.matter {
+    font-size: 24px;
+    text-align: justify;
+    font-family: 'Crimson Text', serif;
+}
+.matter a {
+    text-decoration: none;
+    color: #0000cc;
+}
+.matter_heading a {
+    font-size: 24px;
+    color: #0000cc;
+    font-family: 'Crimson Text', serif;
+    text-decoration: none;
+}
+.matter_heading a:hover {
+    color: #ff6600;
+}
+.matter_desc {
+    font-size: 18px;
+    text-align: justify;
+    background: #f6f6f6;
+    padding: 10px;
+}
+#features {
+    font-size: 28px;
+    color: #ff0000;
+    font-family: 'Crimson Text', serif;
+}
+#features span {
+    font-family: 'Oxygen', serif;
+    color: #000000;
+    font-size: 20px;
+}
+#downloads {
+    margin-top: 40px;
+    border: 1px solid black;
+    height: 300px;
+}
+#downloads_heading {
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Niconne', cursive;
+}
+#downloads p a {
+    text-align: justify;
+    text-decoration: none;
+    color: #0000cc;
+    font-size: 18px;
+    padding: 5px;
+}
+#downloads p a:hover {
+    color: #ff6600;
+}
+.panel-footer {
+    background-color: #000;
+    color: #fff;
+}
+#address {
+    color: #ffffff;
+    font-size: 24px;
+    line-height: 1.2;
+    font-family: 'Crimson Text', serif;
+    padding: 5px;
+}
+#contact_us {
+    color: #ffffff;
+    font-size: 24px;
+    line-height: 1.2;
+    font-family: 'Crimson Text', serif;
+    padding: 5px;
+}
+#contact_us a {
+    text-decoration: none;
+    color: #ffffff;
+    font-family: 'Oxygen', serif;
+    font-size: 20px;
+}
+#nav-list .active_link {
+    color: #ff6600;
+}
+.faq_container {
+    margin-bottom: 10px;
+}
+#faq_heading img {
+    margin-left: auto;
+    margin-right: auto;
+}
+.question {
+    margin-top: 10px;
+    font-size: 25px;
+    color: #000000;
+    font-family: 'Crimson Text', serif;
+    font-weight: 500;
+}
+.answer {
+    margin-top: 5px;
+    font-size: 24px;
+    font-family: 'Crimson Text', serif;
+    text-align: justify;
+    color: #0000cc;
+}
+.branches_container {
+    margin-bottom: 20px;
+}
+.bank_image {
+    padding: 5px;
+    border: 1px solid black;
+}
+.banking_hours .title {
+    text-align: center;
+    font-family: 'Crimson Text', serif;
+    font-size: 25px;
+    margin-top: 10px;
+    color: #ff6600;
+}
+.banking_hours p {
+    text-align: justify;
+    font-size: 18px;
+}
+.bank_name {
+    text-align: center;
+    font-size: 24px;
+    color: #ff0000;
+}
+.bank_description {
+    text-align: justify;
+    font-size: 24px;
+    font-family: 'Crimson Text', serif;
+    margin-top: 10px;
+}
+form {
+    background: #fff;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+form p {
+    color: red;
+    display: inline-block;
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+}
+label {
+    display: inline-block;
+    margin-left: 5%;
+    padding-top: 12px;
+    font-size: 17px;
+    font-weight: normal;
+}
+input {
+    font-family: Arial;
+    font-size: 16px;
+    outline: none;
+}
+input[type=text],
+input[type=password] {
+    color: #000;
+    padding-left: 10px;
+    width: 90%;
+    height: 35px;
+    border: 1px solid #c7d0d2;
+    margin-left: 5%;
+    margin-top: 10px;
+}
+input[type=text]:hover,
+input[type=password]:hover {
+    border: 1px solid #b6bfc0;
+}
+input[type=text]:focus,
+input[type=password]:focus {
+    border: 1px solid #a8c9e4;
+    box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .4), 0 0 0 5px #e6f2f9;
+}
+form a {
+    float: right;
+    margin-top: 10px;
+    margin-right: 5%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #00f;
+    text-decoration: none;
+}
+form a:hover {
+    color: #FF6600;
+    text-decoration: none;
+    cursor: pointer;
+}
+input[type=submit] {
+    display: table;
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+    width: 90%;
+    height: 35px;
+    font-weight: normal;
+    cursor: pointer;
+    background-color: #F7D358;
+    border: 1px solid #999999;
+    font-size: 18px;
+}
+input[type=submit]:hover {
+    background-color: #ffdb99;
+}
+#message {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    margin-left: 5%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-right: 3%;
+}
+#registration_title {
+    margin-top: 2%;
+    text-align: center;
+    color: #ff6600;
+    font-family: 'Crimson Text', serif;
+    font-size: 28px;
+}
+#registration_form {
+    margin-top: 5%;
+}
+input[type=radio] {
+    margin-left: 3%;
+}
+.gender {
+    margin-left: 1%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+#registration_form input[type=submit] {
+    width: 40%;
+    margin-top: 30px;
+}
+#home_links {
+    border-right: 1px solid #d6d6d6;
+    height: 400px;
+}
+#home_content {
+    height: 450px;
+}
+#welcome_message {
+    font-family: 'Crimson Text', serif;
+    font-size: 26px;
+}
+#last_login {
+    font-size: 20px;
+}
+#account_summary {
+    margin-top: 30px;
+}
+#account_summary_title {
+    color: #3232ff;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+#big_table_div {
+    height: 225px;
+    width: 100%;
+    overflow-y: auto;
+}
+#big_table table {
+    border-collapse: collapse;
+}
+#big_table th,
+#big_table td {
+    text-align: center;
+    padding: 8px;
+}
+#big_table tr:nth-child(odd) {
+    background-color: #f6f6f6;
+}
+#big_table tr:nth-child(even) {
+    background-color: #f6fbfc;
+}
+#big_table th {
+    background-color: #dedede;
+    color: #000;
+    font-size: 20px;
+}
+#small_table_div {
+    height: 12em;
+    overflow-y: auto;
+}
+#small_table td {
+    text-align: left;
+    padding: 8px;
+    background-color: #f3f3f3;
+    font-size: 17px;
+}
+
+#small_table td hr{
+    background-color: #f00;
+    border-top: 2px dashed #f00;
+}
+/********** Large devices only **********/
+
+@media (min-width: 1200px) {
+    .slideshow-container {
+        height: 360px;
+    }
+}
+/********** Medium devices only **********/
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    #logo-img {
+        width: 150px;
+        height: 100px;
+        margin: 5px 5px 5px 0;
+    }
+    .slideshow-container {
+        height: 300px;
+    }
+    #announcements {
+        height: 300px;
+    }
+    .banking_hours .title {
+        text-align: left;
+    }
+}
+/********** Small devices only **********/
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #logo-img {
+        width: 100px;
+        height: 50px;
+    }
+    .navbar-brand h1 {
+        font-size: 2.5em;
+    }
+    .navbar-brand p {
+        margin-top: 10px;
+        font-size: 1.2em;
+    }
+    #faq_heading {
+        font-size: 24px;
+    }
+    .question {
+        font-size: 22px;
+    }
+    .answer {
+        font-size: 21px;
+    }
+}
+/********** Extra small devices only **********/
+
+@media (max-width: 767px) {
+    #logo-img {
+        display: none;
+    }
+    .navbar-brand {
+        padding-top: 10px;
+        height: 80px;
+    }
+    .navbar-brand h1 {
+        font-size: 1.5em;
+        padding-top: 10px;
+    }
+    .navbar-brand p {
+        margin-top: 12px;
+        font-size: 1em;
+        text-align: center;
+    }
+    #content_heading {
+        font-size: 19px;
+    }
+    #features {
+        font-size: 26px;
+    }
+    #features span {
+        font-size: 17px;
+    }
+    .matter {
+        font-size: 21px;
+    }
+    .matter_heading a {
+        font-size: 21px;
+    }
+    .matter_desc {
+        font-size: 16px;
+    }
+    .panel-footer section {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    #address {
+        font-size: 22px;
+    }
+    #contact_us {
+        font-size: 22px;
+    }
+    #copyright {
+        font-size: 18px;
+    }
+    #faq_heading {
+        font-size: 23px;
+    }
+    .question {
+        font-size: 21px;
+    }
+    .answer {
+        font-size: 20px;
+    }
+    .bank_name {
+        font-size: 22px;
+    }
+    .bank_image {
+        margin-top: 30px;
+    }
+    .banking_hours {
+        position: relative;
+        margin-top: 25%;
+    }
+    .banking_hours .title {
+        font-size: 22px;
+        text-align: left;
+    }
+    .banking_hours p {
+        font-size: 16px;
+    }
+    .bank_description {
+        font-size: 21px;
+    }
+    form {
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
+    #registration_title {
+        font-size: 26px;
+        margin-top: 2%;
+    }
+    #welcome_message {
+        font-size: 24px;
+    }
+    #last_login {
+        font-size: 18px;
+    }
+    #account_summary {
+        margin-top: 30px;
+    }
+    #account_summary_title {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+}
+@media (max-width: 479px) {
+    #logo-img {
+        display: none;
+    }
+    .navbar-brand p {
+        font-size: 1em;
+        margin-right: 7px;
+    }
+    .col-xxs-12 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        float: left;
+        width: 100%;
+    }
+}
