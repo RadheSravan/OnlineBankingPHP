@@ -102,13 +102,17 @@ $app->post('/login', function() use ($app)
             $response['last_name']   = $user['last_name'];
             $response['api_Key']     = $user['api_key'];
             $response['last_login']  = $user['last_login'];
+            $response["code"]        = 200;
+            $db->updateLastLogin($user['customer_id']);
         } else {
             $response['error']   = true;
-            $response['message'] = "An error occurred. Please try again";
+            $response['message'] = "An internal error occurred. Please try again";
+            $response["code"]    = 200;
         }
     } else {
         $response['error']   = true;
-        $response['message'] = 'Login failed. Incorrect credentials';
+        $response['message'] = 'The username or password you have entered is incorrect.';
+        $response["code"]    = 200;
     }
     echoResponse(200, $response);
 });
@@ -184,6 +188,21 @@ $app->get('/announcements', function()
     echoResponse(200, $response);
 });
 
+$app->get('/announcements/:id', function($announcement_id) use ($app)
+{
+    $db       = new DbHandler();
+    $response = array();
+    
+    $result            = $db->getAnnouncementById($announcement_id);
+    $response["error"] = false;
+    
+    while ($announcement = $result->fetch_assoc()) {
+        $response["announcement_id"] = $announcement["announcement_id"];
+        $response["announcement"]    = $announcement["announcement"];
+    }
+    echoResponse(200, $response);
+});
+
 $app->put('/announcements/:id', function($announcement_id) use ($app)
 {
     verifyRequiredParams(array(
@@ -249,6 +268,7 @@ function verifyRequiredParams($required_fields)
         $app                 = \Slim\Slim::getInstance();
         $response["error"]   = true;
         $response["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
+        $response["code"]    = 400;
         echoResponse(400, $response);
         $app->stop();
     }

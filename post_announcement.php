@@ -1,5 +1,5 @@
 <?php
-$announcement = $_POST["username"];
+$announcement   = $_POST["announcement"];
 $service_url    = 'http://localhost/OnlineBankingPHP/REST/v1/announcements';
 $curl           = curl_init($service_url);
 $curl_post_data = array(

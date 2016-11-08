@@ -43,7 +43,7 @@ body {
 }
 .navbar-header button.navbar-toggle,
 .navbar-header .icon-bar {
-    border: 1px solid #ff6600;
+    border: 1px solid #ffffff;
 }
 .navbar-header button.navbar-toggle {
     clear: both;
@@ -90,7 +90,7 @@ body {
 #announcements_small {
     padding: 10px;
     background-color: #f6f6f6;
-    font-size: 16px;
+    font-size: 17px;
 }
 #announcements p {
     text-align: justify;
@@ -382,16 +382,19 @@ input[type=radio] {
     text-align: center;
     padding: 8px;
 }
-#big_table tr:nth-child(odd) {
+#big_table tr:nth-child(even) {
     background-color: #f6f6f6;
 }
-#big_table tr:nth-child(even) {
-    background-color: #f6fbfc;
+#big_table tr:nth-child(odd) {
+    background-color: #ffffff;
 }
 #big_table th {
     background-color: #dedede;
     color: #000;
-    font-size: 20px;
+    font-size: 19px;
+}
+#big_table td {
+    font-size: 19px;
 }
 #small_table_div {
     height: 12em;
@@ -401,7 +404,7 @@ input[type=radio] {
     text-align: left;
     padding: 8px;
     background-color: #f3f3f3;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 #small_table td hr{

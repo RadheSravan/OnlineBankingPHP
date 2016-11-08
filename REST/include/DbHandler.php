@@ -70,6 +70,23 @@ class DbHandler
         }
     }
     
+    public function updateLastLogin($customer_id)
+    {
+        date_default_timezone_set('Asia/Kolkata');
+        $dateTime = new DateTime("NOW");
+        $date     = $dateTime->format('Y-m-d H:i:s');
+        
+        $stmt = $this->conn->prepare("UPDATE customers set last_login = ? WHERE customer_id = ? ");
+        
+        $stmt->bind_param("si", $date, $customer_id);
+        $stmt->execute();
+        $num_affected_rows = $stmt->affected_rows;
+        $stmt->close();
+        
+        return $num_affected_rows > 0;
+        
+    }
+    
     private function isUserExists($user_name, $email)
     {
         
@@ -165,6 +182,18 @@ class DbHandler
         $stmt->close();
         
         return $announcements;
+    }
+    
+    public function getAnnouncementById($announcement_id)
+    {
+        
+        $stmt = $this->conn->prepare("SELECT * FROM announcements where announcement_id = ?");
+        $stmt->bind_param("i", $announcement_id);
+        $stmt->execute();
+        $announcement = $stmt->get_result();
+        $stmt->close();
+        
+        return $announcement;
     }
     
     public function updateAnnouncement($announcement_id, $announcement)
